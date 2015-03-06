@@ -1,21 +1,29 @@
 (function () {
 
-  var Controller = Game.Controller = function () {
+  var Controller = Game.Controller = function (context) {
     this.balls = [];
-    this.gun = new Gun.Blaster();
+    this.bullets = [];
+    this.gun = new Gun.Blaster(this);
+    this.monster = new Monsters.Monster(1, context);
 
     var tempBall = new MovingObject.Ball([250, 250], this);
     this.add(tempBall);
   };
 
   Controller.prototype.add = function (object) {
+    if (object instanceof MovingObject.Ball) {
       this.balls.push(object);
+    } else {
+      this.bullets.push(object);
+    }
   };
 
   Controller.prototype.allObjects = function () {
     return []
       .concat(this.balls)
       .concat(this.gun)
+      .concat(this.bullets)
+      .concat(this.monster)
   };
 
   Controller.prototype.draw = function (context) {
@@ -47,7 +55,7 @@
   }
   Controller.prototype.moveObjects = function () {
     this.allObjects().forEach(function (object) {
-      if (object instanceof MovingObject.Ball) {
+      if (object instanceof MovingObject.Ball || object instanceof MovingObject.Bullet) {
         object.move();
       }
     });
@@ -67,6 +75,8 @@
   Controller.prototype.remove = function (object) {
    if (object instanceof MovingObject.Ball) {
      this.balls.splice(this.balls.indexOf(object), 1);
+   } else if (object instanceof MovingObject.Bullet) {
+     this.bullets.splice(this.bullets.indexOf(object), 1);
    }
  };
 

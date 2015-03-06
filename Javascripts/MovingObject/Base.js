@@ -6,7 +6,8 @@
     this.velocity = options.velocity;
     this.radius = options.radius;
     this.color = options.color;
-    this.isBounceable = options.isBounceable
+    this.isBounceable = options.isBounceable;
+    this.isExplodeable = options.isExplodeable;
     this.game = options.game;
   };
 
@@ -21,13 +22,16 @@
   };
 
   MovingObjectBase.prototype.isCollidedWith = function (otherObject) {
-    var centerDist = Game.Utility.dist(this.position, otherObject.pos);
-    return centerDist < (this.radius + otherObject.radius);
+    var centerDistance = Game.Utility.distance(this.position, otherObject.position);
+    return centerDistance < (this.radius + otherObject.radius);
   };
 
   MovingObjectBase.prototype.move = function () {
     this.position = [this.position[0] + this.velocity[0], this.position[1] + this.velocity[1]];
 
+    if (this.isExplodeable) {
+      this.checkCollisions();
+    }
     if (this.game.isOutOfBounds(this.position)) {
       if (this.isBounceable) {
         this.bounce()
@@ -35,8 +39,27 @@
         this.game.remove(this)
       }
     }
+  };
 
-    // this.position = [Math.floor(this.position[0]), Math.floor(this.position[1])];
+  MovingObjectBase.prototype.checkCollisions = function () {
+    this.game.allObjects().forEach(function (object) {
+      if (this != object) {
+        if (this.isCollidedWith(object)) {
+          if (this.exploded) {
+            // debugger
+            this.removeBullet(object);
+          } else {
+            this.explode();
+          }
+        }
+      }
+    }.bind(this));
+  };
+
+  MovingObjectBase.prototype.removeBullet = function (object) {
+    if (object instanceof MovingObject.Bullet) {
+      this.game.remove(object);
+    }
   };
 
   MovingObjectBase.prototype.bounce = function () {

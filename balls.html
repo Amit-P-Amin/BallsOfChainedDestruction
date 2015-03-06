@@ -4,18 +4,25 @@
   </head>
 
   <body>
+    <div id="monster"></div>
     <canvas></canvas>
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
 
-    <script type="application/javascript" src="Assets/Game/GameView.js"></script>
-    <script type="application/javascript" src="Assets/Game/Game.js"></script>
-    <script type="application/javascript" src="Assets/Game/Utility.js"></script>
+    <script type="application/javascript" src="Javascripts/Vendor/keymaster.js"></script>
+    <script type="application/javascript" src="Javascripts/Vendor/jquery.min.js"></script>
 
-    <script type="application/javascript" src="Assets/MovingObject/Base.js"></script>
-    <script type="application/javascript" src="Assets/MovingObject/Ball.js"></script>
+    <script type="application/javascript" src="Javascripts/Game/GameView.js"></script>
+    <script type="application/javascript" src="Javascripts/Game/Game.js"></script>
+    <script type="application/javascript" src="Javascripts/Game/Utility.js"></script>
 
-    <script type="application/javascript" src="Assets/Gun/Gun.js"></script>
-    
+    <script type="application/javascript" src="Javascripts/MovingObject/Base.js"></script>
+    <script type="application/javascript" src="Javascripts/MovingObject/Ball.js"></script>
+    <script type="application/javascript" src="Javascripts/MovingObject/Bullet.js"></script>
+
+    <script type="application/javascript" src="Javascripts/Gun/Blaster.js"></script>
+
+    <script type="application/javascript" src="Javascripts/Monsters/Monster.js"></script>
+
     <script type="application/javascript">
       (function () {
         var canvas = document.getElementsByTagName("canvas")[0];
@@ -23,7 +30,7 @@
         canvas.height = 400;
         var context = canvas.getContext("2d");
 
-        var game = new Game.Controller();
+        var game = new Game.Controller(context);
         new Game.View(game, context).start();
       })();
     </script>

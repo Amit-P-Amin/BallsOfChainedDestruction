@@ -7,3 +7,11 @@ body {
 canvas {
   border: 10px solid black;
 }
+
+
+.monster {
+  position:absolute;
+  left: 170;
+  top: 170;
+  z-index: 99;
+}
