@@ -1,25 +1,28 @@
 <html>
   <head>
-    <title>Ball</title>
+    <title>Balls of Exploding Fury</title>
   </head>
 
   <body>
     <canvas></canvas>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
 
-    <script type="application/javascript" src="lib/util.js"></script>
-    <script type="application/javascript" src="lib/movingObject.js"></script>
-    <script type="application/javascript" src="lib/bullet.js"></script>
-    <script type="application/javascript" src="lib/game.js"></script>
-    <script type="application/javascript" src="lib/gameView.js"></script>
+    <script type="application/javascript" src="Assets/Game/GameView.js"></script>
+    <script type="application/javascript" src="Assets/Game/Game.js"></script>
+    <script type="application/javascript" src="Assets/Game/Utility.js"></script>
+
+    <script type="application/javascript" src="Assets/MovingObject/Base.js"></script>
+    <script type="application/javascript" src="Assets/MovingObject/Ball.js"></script>
 
     <script type="application/javascript">
       (function () {
         var canvas = document.getElementsByTagName("canvas")[0];
-        canvas.width = 1000;
-        canvas.height = 1000;
+        canvas.width = 400;
+        canvas.height = 400;
         var context = canvas.getContext("2d");
-        var game = new Balls.Game();
-        new Balls.GameView(game, context).start();
+
+        var game = new Game.Controller();
+        new Game.View(game, context).start();
       })();
     </script>
   </body>
