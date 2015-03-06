@@ -2,6 +2,8 @@
 
   var Controller = Game.Controller = function () {
     this.balls = [];
+    this.gun = new Gun.Blaster();
+
     var tempBall = new MovingObject.Ball([250, 250], this);
     this.add(tempBall);
   };
@@ -13,30 +15,31 @@
   Controller.prototype.allObjects = function () {
     return []
       .concat(this.balls)
+      .concat(this.gun)
   };
 
-  Controller.prototype.draw = function (ctx) {
-    ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
+  Controller.prototype.draw = function (context) {
+    context.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 
-    ctx.fillStyle = Game.BG_COLOR;
-    ctx.fillRect(0, 0, Game.DIM_X, Game.DIM_Y);
+    context.fillStyle = Game.BG_COLOR;
+    context.fillRect(0, 0, Game.DIM_X, Game.DIM_Y);
 
     this.allObjects().forEach(function (object) {
-      object.draw(ctx);
+      object.draw(context);
     });
   };
 
-  Controller.prototype.isOutOfBounds = function (pos) {
-    return (pos[0] < 0) || (pos[1] < 0)
-      || (pos[0] > Game.DIM_X) || (pos[1] > Game.DIM_Y);
+  Controller.prototype.isOutOfBounds = function (position) {
+    return (position[0] < 0) || (position[1] < 0)
+      || (position[0] > Game.DIM_X) || (position[1] > Game.DIM_Y);
   };
 
-  Controller.prototype.wallPerpendicularVector = function (pos) {
-    if (pos[0] < 0) {
+  Controller.prototype.wallPerpendicularVector = function (position) {
+    if (position[0] < 0) {
       return [1, 0]
-    } else if (pos[1] < 0) {
+    } else if (position[1] < 0) {
       return [0, 1]
-    } else if (pos[0] > Game.DIM_X) {
+    } else if (position[0] > Game.DIM_X) {
       return [-1, 0]
     } else {
       return [0, -1]
@@ -44,7 +47,9 @@
   }
   Controller.prototype.moveObjects = function () {
     this.allObjects().forEach(function (object) {
-      object.move();
+      if (object instanceof MovingObject.Ball) {
+        object.move();
+      }
     });
   };
 

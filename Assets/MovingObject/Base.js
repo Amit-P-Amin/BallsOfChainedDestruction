@@ -2,33 +2,33 @@
   window.MovingObject = {};
 
   var MovingObjectBase = MovingObject.MovingObjectBase = function (options) {
-    this.pos = options.position;
-    this.vel = options.velocity;
+    this.position = options.position;
+    this.velocity = options.velocity;
     this.radius = options.radius;
     this.color = options.color;
     this.isBounceable = options.isBounceable
     this.game = options.game;
   };
 
-  MovingObjectBase.prototype.draw = function (ctx) {
-    ctx.fillStyle = this.color;
-    ctx.globalAlpha = 1
-    ctx.beginPath();
-    ctx.arc(
-      this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
+  MovingObjectBase.prototype.draw = function (context) {
+    context.fillStyle = this.color;
+    context.globalAlpha = 1
+    context.beginPath();
+    context.arc(
+      this.position[0], this.position[1], this.radius, 0, 2 * Math.PI, true
     );
-    ctx.fill();
+    context.fill();
   };
 
   MovingObjectBase.prototype.isCollidedWith = function (otherObject) {
-    var centerDist = Game.Utility.dist(this.pos, otherObject.pos);
+    var centerDist = Game.Utility.dist(this.position, otherObject.pos);
     return centerDist < (this.radius + otherObject.radius);
   };
 
   MovingObjectBase.prototype.move = function () {
-    this.pos = [this.pos[0] + this.vel[0], this.pos[1] + this.vel[1]];
+    this.position = [this.position[0] + this.velocity[0], this.position[1] + this.velocity[1]];
 
-    if (this.game.isOutOfBounds(this.pos)) {
+    if (this.game.isOutOfBounds(this.position)) {
       if (this.isBounceable) {
         this.bounce()
       } else {
@@ -36,15 +36,15 @@
       }
     }
 
-    // this.pos = [Math.floor(this.pos[0]), Math.floor(this.pos[1])];
+    // this.position = [Math.floor(this.position[0]), Math.floor(this.position[1])];
   };
 
   MovingObjectBase.prototype.bounce = function () {
-    var wallVector = this.game.wallPerpendicularVector(this.pos);
-    var speed = Game.Utility.norm(this.vel);
+    var perpendicularVector = this.game.wallPerpendicularVector(this.position);
+    var speed = Game.Utility.norm(this.velocity);
 
-    this.vel = Game.Utility.reflection(Game.Utility.dir(this.vel), wallVector);
-    this.vel = [this.vel[0] * speed, this.vel[1] * speed]
+    this.velocity = Game.Utility.reflection(Game.Utility.direction(this.velocity), perpendicularVector);
+    this.velocity = [this.velocity[0] * speed, this.velocity[1] * speed]
   }
 
 })();
