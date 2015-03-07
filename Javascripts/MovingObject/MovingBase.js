@@ -46,6 +46,7 @@
       if (this != object) {
         if (this.isCollidedWith(object)) {
           if (this.exploded) {
+            // debugger
             this.removeBullet(object);
           } else {
             this.explode();
