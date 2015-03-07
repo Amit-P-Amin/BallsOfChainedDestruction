@@ -36,7 +36,7 @@
       if (this.isBounceable) {
         this.bounce()
       } else {
-        this.game.remove(this)
+        this.game.removeBall(this)
       }
     }
   };
@@ -46,8 +46,7 @@
       if (this != object) {
         if (this.isCollidedWith(object)) {
           if (this.exploded) {
-            // debugger
-            this.removeBullet(object);
+            this.removeIfBullet(object);
           } else {
             this.explode();
           }
@@ -56,7 +55,7 @@
     }.bind(this));
   };
 
-  MovingObjectBase.prototype.removeBullet = function (object) {
+  MovingObjectBase.prototype.removeIfBullet = function (object) {
     if (object instanceof MovingObject.Bullet) {
       this.game.remove(object);
     }
