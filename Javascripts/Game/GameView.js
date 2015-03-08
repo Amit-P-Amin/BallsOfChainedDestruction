@@ -37,7 +37,7 @@
       function () {
         gameView.game.step();
         gameView.game.draw(gameView.context);
-        window.requestAnimationFrame
+        window.requestAnimationFrame;
       }, 1000 / Game.FPS
     );
 

@@ -1,22 +1,27 @@
 (function() {
   MovingObject.Balls = {}
 
-  MovingObject.Balls.COLOR = "blue";
-  MovingObject.Balls.RADIUS = 8;
-
-  var Ball = MovingObject.Ball = function (position, game, ballNumber){
+  var Ball = MovingObject.Ball = function (game, ballNumber){
+    this.game = game;
     this.number = ballNumber;
-    var velocity = Game.Utility.randomVector(5);
-    var radius = MovingObject.Balls.RADIUS;
-    var color = MovingObject.Balls.COLOR;
-    var options = {position: position, velocity: velocity, radius: radius, color: color, game: game, isBounceable: true, isExplodeable: true}
-    MovingObject.MovingObjectBase.call(this, options);
+    this.effectDuration = 3500;
+    MovingObject.MovingObjectBase.call(this);
+    this.setDefaults();
   };
 
   Game.Utility.inherits(Ball, MovingObject.MovingObjectBase);
 
+  Ball.prototype.setDefaults = function () {
+    this.isBounceable = true;
+    this.isExplodeable = true;
+    this.isExploded = false;
+    this.damage = 5;
+  };
+
   Ball.prototype.explode = function () {
-    this.exploded = true;
+    this.isDamageDealing = true;
+    this.isExploded = true;
+    this.isBounceable = false;
 
     var expansionId = setInterval(
       function () {
@@ -30,8 +35,8 @@
 
     this.velocity = [0, 0];
     setTimeout(function () {
-      this.game.removeBall(this);
-    }.bind(this), 1500);
+      this.game.remove(this);
+    }.bind(this), this.effectDuration);
   };
 
 })();

@@ -2,6 +2,7 @@ body {
   margin: 0 auto;
   width: 1000px;
   margin-top: 10px;
+  margin-left:100px;
 }
 
 canvas {
@@ -9,9 +10,27 @@ canvas {
 }
 
 
-.monster {
+#monster {
   position:absolute;
-  left: 170;
-  top: 170;
+  /*200 is middle, subtract 30 for half of width, add 10 for canvas border, add 100 for margin-left*/
+  left: 280;
+  /*200 is middle, subtract 30 for half of height, add 10 for canvas border and another 10 for body margin-top*/
+  top: 190;
   z-index: 99;
+  width:60px;
+  height: 60px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.centering-helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.monster {
+  max-height: 50px;
+  max-width: 50px;
+  vertical-align: middle;
 }

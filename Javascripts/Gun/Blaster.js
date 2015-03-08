@@ -19,11 +19,9 @@
 
   Blaster.prototype.move = function (direction) {
     this.position = [this.position[0] + direction[0], this.position[1] + direction[1]];
-
   };
 
   Blaster.prototype.fireBullet = function () {
-
    var bullet = new MovingObject.Bullet(this.position, this.game);
    this.game.add(bullet);
  };

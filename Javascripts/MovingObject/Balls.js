@@ -3,13 +3,29 @@
 
   var Balls = MovingObject.BallsController = function (game){
     this.ballGems = {};
-    this.balls = {};
+    this.balls = [];
     this.game = game;
+  };
+
+  Balls.prototype.setEffects = function (ball) {
+    var gems = this.ballGems[ball.number];
+
+    gems.forEach( function (gem) {
+      var gemType = gem[0];
+      var gemLevel = gem[1];
+      if (gemType === "size") {
+        ball.radius += 4 * gemLevel;
+      } else if (gemType === "duration") {
+        ball.effectDuration += 500 * gemLevel
+      }
+    })
+
+    return ball;
   };
 
   Balls.prototype.addBall = function () {
     var index = this.balls.length || 0
-    this.ballGems[index] = [1];
+    this.ballGems[index] = [["size", 1], ["duration", 1]];
     this.spawn(index);
   };
 
@@ -18,14 +34,12 @@
   };
 
   Balls.prototype.spawn = function (index) {
-    if (this.ballGems[index][0] === [1][0]) {
-      var ball = new MovingObject.Ball([250, 250], this.game, 0);
-      this.balls[index] = ball
-    }
-
+    var ball = new MovingObject.Ball(this.game, index);
+    ball = this.setEffects(ball);
+    this.balls[index] = ball;
   };
 
-  Balls.prototype.destroy = function (ball) {
+  Balls.prototype.remove = function (ball) {
     setTimeout(function () {
       this.spawn(ball.number);
     }.bind(this), 1000);
@@ -35,13 +49,13 @@
   Balls.prototype.allBalls = function () {
     var balls = []
 
-    for (var key in this.balls) {
-      value = this.balls[key]
-      if (value != null) {
-        balls.push(value);
+    this.balls.forEach( function (ball) {
+      if (ball != null) {
+        balls.push(ball)
       }
-    }
+    })
 
     return balls
   }
+
 })();
