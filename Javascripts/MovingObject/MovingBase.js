@@ -9,6 +9,8 @@
     this.isBounceable = false;
     this.isExplodeable = false;
     this.isDamageDealing = false;
+    this.isBase = true;
+    this.expansionSize = 0;
   };
 
   MovingObjectBase.prototype.draw = function (context) {

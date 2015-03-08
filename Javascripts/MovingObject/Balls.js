@@ -17,15 +17,19 @@
         ball.radius += 4 * gemLevel;
       } else if (gemType === "duration") {
         ball.effectDuration += 500 * gemLevel
+      } else if (gemType === "splitter") {
+        ball.splits = gemLevel;
+      } else if (gemType === "expander") {
+        ball.expansionSize = gemLevel;
       }
     })
 
     return ball;
   };
 
-  Balls.prototype.addBall = function () {
+  Balls.prototype.addBall = function (gems) {
     var index = this.balls.length || 0
-    this.ballGems[index] = [["size", 1], ["duration", 1]];
+    this.ballGems[index] = gems;
     this.spawn(index);
   };
 
@@ -40,9 +44,11 @@
   };
 
   Balls.prototype.remove = function (ball) {
-    setTimeout(function () {
-      this.spawn(ball.number);
-    }.bind(this), 1000);
+    if (ball.isBase === true){
+      setTimeout(function () {
+        this.spawn(ball.number);
+      }.bind(this), 1000);
+    }
     this.balls[ball.number] = null;
   };
 
