@@ -4,6 +4,7 @@
   var Balls = MovingObject.BallsController = function (game){
     this.ballGems = {};
     this.balls = [];
+    this.ballGroups = [];
     this.game = game;
   };
 
@@ -44,7 +45,9 @@
   };
 
   Balls.prototype.remove = function (ball) {
-    if (ball.isBase === true){
+    if (ball.groupNumber != null) {
+      this.ballGroups[ball.groupNumber].remove(ball);
+    } else if (ball.isBase === true){
       setTimeout(function () {
         this.spawn(ball.number);
       }.bind(this), 1000);
@@ -55,12 +58,21 @@
   Balls.prototype.allBalls = function () {
     var balls = []
 
-    this.balls.forEach( function (ball) {
+    this.balls.forEach(function (ball) {
       if (ball != null) {
         balls.push(ball)
       }
     })
 
+    if (this.ballGroups.length > 0) {
+      this.ballGroups.forEach(function (group) {
+        group.balls.forEach(function (ball) {
+          if (ball != null) {
+            balls.push(ball)
+          }
+        })
+      })
+    }
     return balls
   }
 
